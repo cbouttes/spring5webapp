@@ -25,27 +25,42 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        Publisher eni = new Publisher("ENI", "13 r Calais","Paris","FRANCE","75009");
+
+        publisherRepository.save(eni);
+
+        System.out.println("Editeur eni : " + eni);
+        System.out.println("Number of Publisher: " + publisherRepository.count());
+
         Author eric = new Author("Eric","Evans");
-        Book ddd = new Book("Domain Driven Design", "123123");
-        eric.getBooks().add(ddd);
-        ddd.getAuthors().add(eric);
+        Book bookDdd = new Book("Domain Driven Design", "123123");
+        eric.getBooks().add(bookDdd);
+        bookDdd.getAuthors().add(eric);
+        bookDdd.setPublisher(eni);
+        System.out.println("Publisher of book " + bookDdd.getTitle() + " : " + bookDdd.getPublisher().getName());
+
         authorRepository.save(eric);
-        bookRepository.save(ddd);
+        bookRepository.save(bookDdd);
 
         Author rod = new Author("Rod", "Johnson");
-        Book noEJB = new Book("J2EE Development without EJB", "3939459459");
-        rod.getBooks().add(noEJB);
-        noEJB.getAuthors().add(rod);
+        Book bookNoEJB = new Book("J2EE Development without EJB", "3939459459");
+        rod.getBooks().add(bookNoEJB);
+        bookNoEJB.getAuthors().add(rod);
+        bookNoEJB.setPublisher(eni);
+        System.out.println("Publisher of " + bookNoEJB.getTitle() + " : " + bookNoEJB.getPublisher().getName());
 
         authorRepository.save(rod);
-        bookRepository.save(noEJB);
+        bookRepository.save(bookNoEJB);
 
         System.out.println("Started in Bootstrap");
         System.out.println("Number of Books: " + bookRepository.count());
 
-        Publisher eni = new Publisher("ENI", "13 r Calais","Paris","FRANCE","75009");
+        eni.getBooks().add(bookDdd);
+        eni.getBooks().add(bookNoEJB);
+        System.out.println("Number of books for ENI publisher: " + eni.getBooks().size());
+
         publisherRepository.save(eni);
-        System.out.println("Editeur eni : " + eni.toString());
+
 
     }
 
